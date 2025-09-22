@@ -2,4 +2,7 @@ bin/
 obj/
 /packages/
 
+.vs/
+node_modules/
+
 
