@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { getDocument, GlobalWorkerOptions } from "pdfjs-dist";
 import {
-  defaultFormValues,
+  loadedFormValues,
   CHECKBOX_FIELDS,
   LINK_FIELDS,
 } from "./formFieldsConfig";
@@ -114,6 +114,18 @@ export default function PDFFormViewer() {
     [pdfDocument, extractFormFields]
   );
 
+  useEffect(() => {
+    console.log("formFields changed:", formFields);
+
+    return () => {};
+  }, [formFields]);
+
+  useEffect(() => {
+    console.log("formData changed:", formData);
+
+    return () => {};
+  }, [formData]);
+
   // Load PDF document
   useEffect(() => {
     const loadPDF = async () => {
@@ -198,33 +210,31 @@ export default function PDFFormViewer() {
     };
   }, [currentPage, totalPages, pdfLoaded]);
 
-  // Initialize form data with default values when form fields are available
+  // Initialize form data with loaded values when form fields are available
   useEffect(() => {
     if (Object.keys(formFields).length > 0) {
       setFormData((prev) => {
-        const initialData = { ...prev };
+        const formData = { ...prev };
 
-        // Use the imported default form values from configuration file
+        // Use the loaded form values from configuration file - these are the permanent values to display
 
-        // Apply default values to fields that don't have values yet
-        Object.entries(defaultFormValues).forEach(
-          ([fieldName, defaultValue]) => {
-            if (!initialData[fieldName]) {
-              initialData[fieldName] = defaultValue;
-            }
+        // Apply loaded values to populate the form fields
+        Object.entries(loadedFormValues).forEach(([fieldName, loadedValue]) => {
+          if (!formData[fieldName]) {
+            formData[fieldName] = loadedValue;
           }
-        );
+        });
 
-        // Also initialize any detected fields with their default values from PDF
+        // Also initialize any detected fields with their values from PDF
         Object.values(formFields).forEach((pageFields) => {
           pageFields.forEach((field) => {
-            if (!initialData[field.name] && field.value) {
-              initialData[field.name] = field.value;
+            if (!formData[field.name] && field.value) {
+              formData[field.name] = field.value;
             }
           });
         });
 
-        return initialData;
+        return formData;
       });
     }
   }, [formFields]);
@@ -407,7 +417,7 @@ export default function PDFFormViewer() {
                     {isCheckboxField ? (
                       // Show X for checked checkboxes
                       <span style={{ fontSize: "14px", fontWeight: "bold" }}>
-                        {fieldValue ? "x" : ""}
+                        {fieldValue === true ? "x" : ""}
                       </span>
                     ) : // Show text value for text fields
                     LINK_FIELDS[field.name] ? (

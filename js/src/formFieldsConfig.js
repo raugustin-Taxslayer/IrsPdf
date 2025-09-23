@@ -1,8 +1,9 @@
-// Default form field values for IRS Form 1040
-// This file contains all the form fields found in the PDF with their default values
+// Loaded form field values for IRS Form 1040
+// This file contains the actual form field data that will be used to populate the PDF
+// These values are permanent and will not change - they represent the final form state
 // Checkbox fields are marked with comments for easy identification
 
-export const defaultFormValues = {
+export const loadedFormValues = {
   // === PAGE 1 - PERSONAL INFORMATION ===
 
   // Name and Address
@@ -31,7 +32,7 @@ export const defaultFormValues = {
   // === FILING STATUS CHECKBOXES ===
   // NOTE: These are CHECKBOX fields - only one should be selected
   "topmostSubform[0].Page1[0].c1_1[0]": false, // Single - CHECKBOX
-  "topmostSubform[0].Page1[0].c1_1[1]": true, // Married filing jointly - CHECKBOX
+  "topmostSubform[0].Page1[0].FilingStatus_ReadOrder[0].c1_3[0]": true, // Married filing jointly - CHECKBOX
   "topmostSubform[0].Page1[0].c1_1[2]": false, // Married filing separately - CHECKBOX
   "topmostSubform[0].Page1[0].c1_1[3]": false, // Head of household - CHECKBOX
   "topmostSubform[0].Page1[0].c1_1[4]": false, // Qualifying widow(er) - CHECKBOX
@@ -175,11 +176,11 @@ export const defaultFormValues = {
   "topmostSubform[0].Page2[0].c2_1[0]": false, // Preparer self-employed - CHECKBOX
 };
 
-// Helper function to get all checkbox fields
+// Helper function to get all checkbox fields from the loaded form data
 export const getCheckboxFields = () => {
   const checkboxFields = [];
 
-  Object.entries(defaultFormValues).forEach(([fieldName, value]) => {
+  Object.entries(loadedFormValues).forEach(([fieldName, value]) => {
     // Check if the field name suggests it's a checkbox (starts with 'c' and has array notation)
     // or if the value is boolean
     if (fieldName.includes("[0].c") || typeof value === "boolean") {
@@ -190,11 +191,11 @@ export const getCheckboxFields = () => {
   return checkboxFields;
 };
 
-// Helper function to get all text fields
+// Helper function to get all text fields from the loaded form data
 export const getTextFields = () => {
   const textFields = [];
 
-  Object.entries(defaultFormValues).forEach(([fieldName, value]) => {
+  Object.entries(loadedFormValues).forEach(([fieldName, value]) => {
     // Text fields typically start with 'f' and have string values
     if (fieldName.includes("[0].f") && typeof value === "string") {
       textFields.push(fieldName);
@@ -248,4 +249,4 @@ export const CHECKBOX_FIELDS = [
   "topmostSubform[0].Page2[0].c2_1[0]", // Preparer self-employed
 ];
 
-export default defaultFormValues;
+export default loadedFormValues;
