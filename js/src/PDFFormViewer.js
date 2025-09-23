@@ -355,15 +355,15 @@ export default function PDFFormViewer() {
               : " (Interactive)"}
           </p>
           <p style={{ fontSize: "12px", color: "#666" }}>
-            Types: {formFields[currentPage].filter((f) => f.isCheckbox).length}{" "}
-            checkboxes,{" "}
+            Types: {formFields[currentPage].filter((f) => f.isCheckbox).length}
+            checkboxes,
             {
               formFields[currentPage].filter(
                 (f) => f.type === "Tx" && !f.isCheckbox
               ).length
-            }{" "}
-            text fields,{" "}
-            {formFields[currentPage].filter((f) => f.type === "Ch").length}{" "}
+            }
+            text fields,
+            {formFields[currentPage].filter((f) => f.type === "Ch").length}
             dropdowns
           </p>
           {fieldsArePermanent && (
