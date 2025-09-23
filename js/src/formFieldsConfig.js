@@ -19,26 +19,31 @@ export const loadedFormValues = {
   "topmostSubform[0].Page1[0].f1_09[0]": "987-65-4321", // Spouse SSN
 
   // Address
-  "topmostSubform[0].Page1[0].f1_10[0]": "123 Main Street", // Home address
-  "topmostSubform[0].Page1[0].f1_11[0]": "Apt 4B", // Apt/Suite number
-  "topmostSubform[0].Page1[0].f1_12[0]": "Anytown", // City
-  "topmostSubform[0].Page1[0].f1_13[0]": "NY", // State
-  "topmostSubform[0].Page1[0].f1_14[0]": "12345", // ZIP code
+  "topmostSubform[0].Page1[0].Address_ReadOrder[0].f1_10[0]": "123 Main Street", // Home address
+  "topmostSubform[0].Page1[0].Address_ReadOrder[0].f1_11[0]": "Apt 4B", // Apt/Suite number
+  "topmostSubform[0].Page1[0].Address_ReadOrder[0].f1_12[0]": "Anytown", // City
+  "topmostSubform[0].Page1[0].Address_ReadOrder[0].f1_13[0]": "NY", // State
+  "topmostSubform[0].Page1[0].Address_ReadOrder[0].f1_14[0]": "12345", // ZIP code
 
   // Foreign country name and postal code (if applicable)
-  //   "topmostSubform[0].Page1[0].f1_14[0]": "", // Foreign country
-  "topmostSubform[0].Page1[0].f1_15[0]": "", // Foreign postal code
+  "topmostSubform[0].Page1[0].Address_ReadOrder[0].f1_15[0]": "", // Foreign country
+  "topmostSubform[0].Page1[0].Address_ReadOrder[0].f1_16[0]": "", // Foreign state
+  "topmostSubform[0].Page1[0].Address_ReadOrder[0].f1_17[0]": "", // Foreign postal code
+
+  // === Presidential election campaign check boxes ===
+  "topmostSubform[0].Page1[0].c1_1[0]": false, // You - CHECKBOX
+  "topmostSubform[0].Page1[0].c1_2[0]": true, // Spouse - CHECKBOX
 
   // === FILING STATUS CHECKBOXES ===
   // NOTE: These are CHECKBOX fields - only one should be selected
-  "topmostSubform[0].Page1[0].c1_1[0]": false, // Single - CHECKBOX
-  "topmostSubform[0].Page1[0].FilingStatus_ReadOrder[0].c1_3[0]": true, // Married filing jointly - CHECKBOX
-  "topmostSubform[0].Page1[0].c1_1[2]": false, // Married filing separately - CHECKBOX
-  "topmostSubform[0].Page1[0].c1_1[3]": false, // Head of household - CHECKBOX
-  "topmostSubform[0].Page1[0].c1_1[4]": false, // Qualifying widow(er) - CHECKBOX
+  "topmostSubform[0].Page1[0].FilingStatus_ReadOrder[0].c1_3[0]": false, // Single - CHECKBOX
+  "topmostSubform[0].Page1[0].c1_3[0]": false, // Head of household - CHECKBOX
+  "topmostSubform[0].Page1[0].FilingStatus_ReadOrder[0].c1_3[1]": true, // Married filing jointly - CHECKBOX
+  "topmostSubform[0].Page1[0].FilingStatus_ReadOrder[0].c1_3[2]": true, // Married filing separately - CHECKBOX
+  "topmostSubform[0].Page1[0].c1_3[1]": false, // Qualifying widow(er) - CHECKBOX
 
   // If married filing separately, spouse's name
-  "topmostSubform[0].Page1[0].f1_16[0]": "", // Spouse's name if filing separately
+  "topmostSubform[0].Page1[0].f1_18[0]": "pdf names suck", // Spouse's name if filing separately
 
   // === DEPENDENTS INFORMATION ===
   // Dependent 1
@@ -187,6 +192,7 @@ export const getCheckboxFields = () => {
       checkboxFields.push(fieldName);
     }
   });
+  console.log("Checkbox fields:", checkboxFields);
 
   return checkboxFields;
 };
