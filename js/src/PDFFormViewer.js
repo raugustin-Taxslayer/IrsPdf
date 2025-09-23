@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { getDocument, GlobalWorkerOptions } from "pdfjs-dist";
-import { defaultFormValues, CHECKBOX_FIELDS } from "./formFieldsConfig";
+import {
+  defaultFormValues,
+  CHECKBOX_FIELDS,
+  LINK_FIELDS,
+} from "./formFieldsConfig";
 
 // Configure the worker source for PDF.js
 GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
@@ -482,7 +486,10 @@ export default function PDFFormViewer() {
                     top: `${field.y}px`,
                     width: `${field.width}px`,
                     height: `${field.height}px`,
-                    pointerEvents: fieldsArePermanent ? "none" : "auto", // Disable interaction when permanent
+                    pointerEvents:
+                      fieldsArePermanent && !LINK_FIELDS[field.name]
+                        ? "none"
+                        : "auto", // Keep pointer events for link fields
                   }}
                 >
                   {fieldsArePermanent ? (
@@ -504,6 +511,9 @@ export default function PDFFormViewer() {
                         backgroundColor: "rgba(255, 255, 255, 0.9)",
                         borderRadius: "2px",
                         boxSizing: "border-box",
+                        pointerEvents: LINK_FIELDS[field.name]
+                          ? "auto"
+                          : "none", // Ensure link fields can be clicked
                       }}
                     >
                       {isCheckboxField ? (
@@ -511,8 +521,43 @@ export default function PDFFormViewer() {
                         <span style={{ fontSize: "14px", fontWeight: "bold" }}>
                           {fieldValue ? "✓" : ""}
                         </span>
+                      ) : // Show text value for text fields
+                      LINK_FIELDS[field.name] ? (
+                        // Render as clickable link for configured fields
+                        <a
+                          href={
+                            LINK_FIELDS[field.name].href || `#${field.name}`
+                          }
+                          title={
+                            LINK_FIELDS[field.name].title ||
+                            `Click for ${field.name} details`
+                          }
+                          onClick={(e) => {
+                            e.preventDefault();
+                            if (LINK_FIELDS[field.name].onClick) {
+                              LINK_FIELDS[field.name].onClick(fieldValue);
+                            } else {
+                              console.log(
+                                `Link field clicked: ${field.name} = ${fieldValue}`
+                              );
+                            }
+                          }}
+                          style={{
+                            textOverflow: "ellipsis",
+                            overflow: "hidden",
+                            whiteSpace: field.multiLine ? "normal" : "nowrap",
+                            wordWrap: "break-word",
+                            color: "#007acc",
+                            textDecoration: "underline",
+                            cursor: "pointer",
+                            fontSize: "12px",
+                            fontFamily: "Arial, sans-serif",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {fieldValue}
+                        </a>
                       ) : (
-                        // Show text value for text fields
                         <span
                           style={{
                             textOverflow: "ellipsis",

@@ -85,8 +85,8 @@ export const defaultFormValues = {
   // Taxable social security (Line 6b)
   "topmostSubform[0].Page1[0].f1_33[0]": "0", // Taxable social security
 
-  // Capital gain or loss (Line 7)
-  "topmostSubform[0].Page1[0].f1_34[0]": "1200", // Capital gains
+  // Capital gain or loss (Line 7) - Special field with anchor tag
+  "topmostSubform[0].Page1[0].f1_34[0]": "1200", // Capital gains (will be rendered as clickable link)
 
   // Additional income (Line 8)
   "topmostSubform[0].Page1[0].f1_35[0]": "0", // Other income
@@ -202,6 +202,23 @@ export const getTextFields = () => {
   });
 
   return textFields;
+};
+
+// Fields that should be rendered as clickable links
+export const LINK_FIELDS = {
+  "topmostSubform[0].Page1[0].f1_34[0]": {
+    type: "link",
+    href: "#capital-gains-details", // You can customize the href
+    title: "Click to view capital gains details",
+    onClick: (value) => {
+      console.log(`Capital gains clicked: $${value}`);
+      // Add custom behavior here
+      alert(
+        `Capital gains amount: $${value}\n\nClick OK to view Schedule D details.`
+      );
+    },
+  },
+  // Add more link fields as needed
 };
 
 // Export lists for easy reference
