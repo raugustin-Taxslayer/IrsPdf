@@ -25,7 +25,7 @@ export const defaultFormValues = {
   "topmostSubform[0].Page1[0].f1_14[0]": "12345", // ZIP code
 
   // Foreign country name and postal code (if applicable)
-  "topmostSubform[0].Page1[0].f1_14[0]": "", // Foreign country
+  //   "topmostSubform[0].Page1[0].f1_14[0]": "", // Foreign country
   "topmostSubform[0].Page1[0].f1_15[0]": "", // Foreign postal code
 
   // === FILING STATUS CHECKBOXES ===
