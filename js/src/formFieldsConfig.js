@@ -129,19 +129,19 @@ export const loadedFormValues = {
 
   // === Checkbox fields ===
   "topmostSubform[0].Page1[0].c1_1[0]": false, // Presidential Election Campaign - You
-  "topmostSubform[0].Page1[0].c1_2[0]": false, // Presidential Election Campaign - Spouse
+  "topmostSubform[0].Page1[0].c1_2[0]": true, // Presidential Election Campaign - Spouse
   "topmostSubform[0].Page1[0].c1_3[0]": false, // Filing Status - Single
-  "topmostSubform[0].Page1[0].c1_4[0]": false, // Filing Status - Married filing jointly
+  "topmostSubform[0].Page1[0].c1_4[0]": true, // Filing Status - Married filing jointly
   "topmostSubform[0].Page1[0].c1_5[0]": false, // Filing Status - Married filing separately (MFS)
   "topmostSubform[0].Page1[0].c1_6[0]": false, // Filing Status - Head of household (HOH)
   "topmostSubform[0].Page1[0].c1_7[0]": false, // Filing Status - Qualifying surviving spouse (QSS)
-  "topmostSubform[0].Page1[0].c1_8[0]": false, // Digital Assets - Yes
+  "topmostSubform[0].Page1[0].c1_8[0]": true, // Digital Assets - Yes
   "topmostSubform[0].Page1[0].c1_9[0]": false, // Digital Assets - No
   "topmostSubform[0].Page1[0].c1_10[0]": false, // Standard Deduction - You as a dependent
   "topmostSubform[0].Page1[0].c1_11[0]": false, // Standard Deduction - Spouse as a dependent
   "topmostSubform[0].Page1[0].c1_12[0]": false, // Standard Deduction - Spouse itemizes / dual-status alien
   "topmostSubform[0].Page1[0].c1_13[0]": false, // Age/Blindness - You born before Jan 2, 1960
-  "topmostSubform[0].Page1[0].c1_14[0]": false, // Age/Blindness - You are blind
+  "topmostSubform[0].Page1[0].c1_14[0]": true, // Age/Blindness - You are blind
   "topmostSubform[0].Page1[0].c1_15[0]": false, // Age/Blindness - Spouse born before Jan 2, 1960
   "topmostSubform[0].Page1[0].c1_16[0]": false, // Age/Blindness - Spouse is blind
   "topmostSubform[0].Page1[0].c1_17[0]": false, // Dependents - Child tax credit
@@ -149,7 +149,7 @@ export const loadedFormValues = {
   "topmostSubform[0].Page1[0].c1_19[0]": false, // Income - Social Security lump-sum election
   "topmostSubform[0].Page1[0].c1_20[0]": false, // Capital gain - Not required, check here
   "topmostSubform[0].Page1[0].c1_21[0]": false, // Refund - Direct deposit (Form 8888 attached)
-  "topmostSubform[0].Page1[0].c1_22[0]": false, // Third Party Designee - Yes
+  "topmostSubform[0].Page1[0].c1_22[0]": true, // Third Party Designee - Yes
   "topmostSubform[0].Page1[0].c1_23[0]": false, // Third Party Designee - No
   "topmostSubform[0].Page2[0].c2_1[0]": false, // Paid Preparer - Self-employed
   "topmostSubform[0].Page2[0].c2_2[0]": false, // Direct deposit - Checking
