@@ -114,18 +114,6 @@ export default function PDFFormViewer() {
     [pdfDocument, extractFormFields]
   );
 
-  useEffect(() => {
-    console.log("formFields changed:", formFields);
-
-    return () => {};
-  }, [formFields]);
-
-  useEffect(() => {
-    console.log("formData changed:", formData);
-
-    return () => {};
-  }, [formData]);
-
   // Load PDF document
   useEffect(() => {
     const loadPDF = async () => {
