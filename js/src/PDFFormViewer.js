@@ -6,7 +6,8 @@ import {
   LINK_FIELDS,
 } from "./formFieldsConfig";
 
-// Configure the worker source for PDF.js
+// Configure the worker source for P        // Fields are permanently static now
+console.log("Form fields rendered as permanent static elements");
 GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
 
 export default function PDFFormViewer() {
@@ -19,7 +20,6 @@ export default function PDFFormViewer() {
   const [pdfDocument, setPdfDocument] = useState(null);
   const [formFields, setFormFields] = useState({}); // Store fields by page number
   const [formData, setFormData] = useState({}); // Store field values
-  const [fieldsArePermanent, setFieldsArePermanent] = useState(false); // Controls if fields are interactive or permanent
 
   // Function to extract form fields from a page
   const extractFormFields = useCallback(async (page, viewport) => {
@@ -273,13 +273,8 @@ export default function PDFFormViewer() {
         });
         console.log("================================\n");
 
-        // Set fields as permanent after a short delay to allow rendering
-        setTimeout(() => {
-          setFieldsArePermanent(true);
-          console.log(
-            "Form fields are now permanent - interactive elements removed"
-          );
-        }, 1000);
+        // Fields are permanent from the start
+        console.log("Form fields rendered as permanent static elements");
 
         return initialData;
       });
@@ -310,28 +305,17 @@ export default function PDFFormViewer() {
         <div
           style={{
             padding: "10px",
-            backgroundColor: fieldsArePermanent ? "#d4edda" : "#fff3cd",
+            backgroundColor: "#d4edda",
             borderRadius: "5px",
             marginBottom: "15px",
-            border: `1px solid ${fieldsArePermanent ? "#c3e6cb" : "#ffeaa7"}`,
+            border: "1px solid #c3e6cb",
           }}
         >
           <p style={{ margin: "0", fontSize: "14px", fontWeight: "bold" }}>
-            {fieldsArePermanent ? (
-              <span style={{ color: "#155724" }}>
-                🔒 Form fields are permanently filled with default values
-              </span>
-            ) : (
-              <span style={{ color: "#856404" }}>
-                ⏳ Loading default values into form fields...
-              </span>
-            )}
+            <span style={{ color: "#155724" }}>
+              🔒 Form fields are permanently filled with default values
+            </span>
           </p>
-          {!fieldsArePermanent && (
-            <p style={{ margin: "5px 0 0 0", fontSize: "12px", color: "#666" }}>
-              Form will automatically lock after values are applied (1 second)
-            </p>
-          )}
         </div>
       )}
 
@@ -349,10 +333,7 @@ export default function PDFFormViewer() {
         >
           <p>
             📝 {formFields[currentPage].length} form fields detected on this
-            page
-            {fieldsArePermanent
-              ? " (Values are now permanent)"
-              : " (Interactive)"}
+            page (Values are permanent)
           </p>
           <p style={{ fontSize: "12px", color: "#666" }}>
             Types: {formFields[currentPage].filter((f) => f.isCheckbox).length}
@@ -366,39 +347,6 @@ export default function PDFFormViewer() {
             {formFields[currentPage].filter((f) => f.type === "Ch").length}
             dropdowns
           </p>
-          {fieldsArePermanent && (
-            <div style={{ marginTop: "10px" }}>
-              <button
-                onClick={() => setFieldsArePermanent(false)}
-                style={{
-                  padding: "4px 8px",
-                  fontSize: "12px",
-                  backgroundColor: "#007acc",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "3px",
-                  cursor: "pointer",
-                }}
-              >
-                🔓 Make Fields Interactive Again
-              </button>
-              <button
-                onClick={() => setFieldsArePermanent(true)}
-                style={{
-                  padding: "4px 8px",
-                  fontSize: "12px",
-                  backgroundColor: "#28a745",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "3px",
-                  cursor: "pointer",
-                  marginLeft: "5px",
-                }}
-              >
-                🔒 Lock Values Permanently
-              </button>
-            </div>
-          )}
         </div>
       )}
 
@@ -486,192 +434,80 @@ export default function PDFFormViewer() {
                     top: `${field.y}px`,
                     width: `${field.width}px`,
                     height: `${field.height}px`,
-                    pointerEvents:
-                      fieldsArePermanent && !LINK_FIELDS[field.name]
-                        ? "none"
-                        : "auto", // Keep pointer events for link fields
+                    pointerEvents: LINK_FIELDS[field.name] ? "auto" : "none", // Keep pointer events for link fields only
                   }}
                 >
-                  {fieldsArePermanent ? (
-                    // Permanent (static) display
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: isCheckboxField
-                          ? "center"
-                          : "flex-start",
-                        padding: isCheckboxField ? "0" : "2px 4px",
-                        fontSize: "12px",
-                        fontFamily: "Arial, sans-serif",
-                        fontWeight: "bold",
-                        color: "#000",
-                        backgroundColor: "rgba(255, 255, 255, 0.9)",
-                        borderRadius: "2px",
-                        boxSizing: "border-box",
-                        pointerEvents: LINK_FIELDS[field.name]
-                          ? "auto"
-                          : "none", // Ensure link fields can be clicked
-                      }}
-                    >
-                      {isCheckboxField ? (
-                        // Show X for checked checkboxes
-                        <span style={{ fontSize: "14px", fontWeight: "bold" }}>
-                          {fieldValue ? "x" : ""}
-                        </span>
-                      ) : // Show text value for text fields
-                      LINK_FIELDS[field.name] ? (
-                        // Render as clickable link for configured fields
-                        <a
-                          href={
-                            LINK_FIELDS[field.name].href || `#${field.name}`
+                  {/* Permanent (static) display - all fields are now permanently static */}
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: isCheckboxField ? "center" : "flex-start",
+                      padding: isCheckboxField ? "0" : "2px 4px",
+                      fontSize: "12px",
+                      fontFamily: "Arial, sans-serif",
+                      fontWeight: "bold",
+                      color: "#000",
+                      backgroundColor: "rgba(255, 255, 255, 0.9)",
+                      borderRadius: "2px",
+                      boxSizing: "border-box",
+                      pointerEvents: LINK_FIELDS[field.name] ? "auto" : "none", // Ensure link fields can be clicked
+                    }}
+                  >
+                    {isCheckboxField ? (
+                      // Show X for checked checkboxes
+                      <span style={{ fontSize: "14px", fontWeight: "bold" }}>
+                        {fieldValue ? "x" : ""}
+                      </span>
+                    ) : // Show text value for text fields
+                    LINK_FIELDS[field.name] ? (
+                      // Render as clickable link for configured fields
+                      <a
+                        href={LINK_FIELDS[field.name].href || `#${field.name}`}
+                        title={
+                          LINK_FIELDS[field.name].title ||
+                          `Click for ${field.name} details`
+                        }
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (LINK_FIELDS[field.name].onClick) {
+                            LINK_FIELDS[field.name].onClick(fieldValue);
+                          } else {
+                            console.log(
+                              `Link field clicked: ${field.name} = ${fieldValue}`
+                            );
                           }
-                          title={
-                            LINK_FIELDS[field.name].title ||
-                            `Click for ${field.name} details`
-                          }
-                          onClick={(e) => {
-                            e.preventDefault();
-                            if (LINK_FIELDS[field.name].onClick) {
-                              LINK_FIELDS[field.name].onClick(fieldValue);
-                            } else {
-                              console.log(
-                                `Link field clicked: ${field.name} = ${fieldValue}`
-                              );
-                            }
-                          }}
-                          style={{
-                            textOverflow: "ellipsis",
-                            overflow: "hidden",
-                            whiteSpace: field.multiLine ? "normal" : "nowrap",
-                            wordWrap: "break-word",
-                            color: "#007acc",
-                            textDecoration: "underline",
-                            cursor: "pointer",
-                            fontSize: "12px",
-                            fontFamily: "Arial, sans-serif",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {fieldValue}
-                        </a>
-                      ) : (
-                        <span
-                          style={{
-                            textOverflow: "ellipsis",
-                            overflow: "hidden",
-                            whiteSpace: field.multiLine ? "normal" : "nowrap",
-                            wordWrap: "break-word",
-                          }}
-                        >
-                          {fieldValue}
-                        </span>
-                      )}
-                    </div>
-                  ) : (
-                    // Interactive elements (original code)
-                    <>
-                      {isCheckboxField ? (
-                        <input
-                          type="checkbox"
-                          checked={fieldValue || false}
-                          onChange={(e) =>
-                            setFormData((prev) => ({
-                              ...prev,
-                              [field.name]: e.target.checked,
-                            }))
-                          }
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            cursor: "pointer",
-                          }}
-                        />
-                      ) : field.type === "Tx" ? (
-                        field.multiLine ? (
-                          <textarea
-                            value={fieldValue}
-                            onChange={(e) =>
-                              setFormData((prev) => ({
-                                ...prev,
-                                [field.name]: e.target.value,
-                              }))
-                            }
-                            maxLength={field.maxLength}
-                            style={{
-                              width: "100%",
-                              height: "100%",
-                              border: "1px solid #ccc",
-                              borderRadius: "2px",
-                              padding: "2px 4px",
-                              fontSize: "12px",
-                              fontFamily: "Arial, sans-serif",
-                              resize: "none",
-                              boxSizing: "border-box",
-                            }}
-                            placeholder={`Enter ${field.name}`}
-                          />
-                        ) : (
-                          <input
-                            type="text"
-                            value={fieldValue}
-                            onChange={(e) =>
-                              setFormData((prev) => ({
-                                ...prev,
-                                [field.name]: e.target.value,
-                              }))
-                            }
-                            maxLength={field.maxLength}
-                            style={{
-                              width: "100%",
-                              height: "100%",
-                              border: "1px solid #ccc",
-                              borderRadius: "2px",
-                              padding: "2px 4px",
-                              fontSize: "12px",
-                              fontFamily: "Arial, sans-serif",
-                              boxSizing: "border-box",
-                            }}
-                            placeholder={`Enter ${field.name}`}
-                          />
-                        )
-                      ) : field.type === "Ch" ? (
-                        <select
-                          value={fieldValue}
-                          onChange={(e) =>
-                            setFormData((prev) => ({
-                              ...prev,
-                              [field.name]: e.target.value,
-                            }))
-                          }
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            border: "1px solid #ccc",
-                            borderRadius: "2px",
-                            fontSize: "12px",
-                            fontFamily: "Arial, sans-serif",
-                            boxSizing: "border-box",
-                          }}
-                        >
-                          <option value="">Select...</option>
-                          {field.options &&
-                            field.options.map((option, optIndex) => (
-                              <option
-                                key={optIndex}
-                                value={
-                                  option.exportValue || option.displayValue
-                                }
-                              >
-                                {option.displayValue || option.exportValue}
-                              </option>
-                            ))}
-                        </select>
-                      ) : null}
-                    </>
-                  )}
+                        }}
+                        style={{
+                          textOverflow: "ellipsis",
+                          overflow: "hidden",
+                          whiteSpace: field.multiLine ? "normal" : "nowrap",
+                          wordWrap: "break-word",
+                          color: "#007acc",
+                          textDecoration: "underline",
+                          cursor: "pointer",
+                          fontSize: "12px",
+                          fontFamily: "Arial, sans-serif",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {fieldValue}
+                      </a>
+                    ) : (
+                      <span
+                        style={{
+                          textOverflow: "ellipsis",
+                          overflow: "hidden",
+                          whiteSpace: field.multiLine ? "normal" : "nowrap",
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        {fieldValue}
+                      </span>
+                    )}
+                  </div>
                 </div>
               );
             })}
