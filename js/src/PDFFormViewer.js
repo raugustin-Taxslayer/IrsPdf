@@ -517,9 +517,9 @@ export default function PDFFormViewer() {
                       }}
                     >
                       {isCheckboxField ? (
-                        // Show ✓ or ✗ for checkboxes
+                        // Show X for checked checkboxes
                         <span style={{ fontSize: "14px", fontWeight: "bold" }}>
-                          {fieldValue ? "✓" : ""}
+                          {fieldValue ? "x" : ""}
                         </span>
                       ) : // Show text value for text fields
                       LINK_FIELDS[field.name] ? (
