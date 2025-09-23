@@ -211,7 +211,6 @@ export const LINK_FIELDS = {
     href: "#capital-gains-details", // You can customize the href
     title: "Click to view capital gains details",
     onClick: (value) => {
-      console.log(`Capital gains clicked: $${value}`);
       // Add custom behavior here
       alert(
         `Capital gains amount: $${value}\n\nClick OK to view Schedule D details.`

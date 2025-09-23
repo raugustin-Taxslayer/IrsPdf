@@ -6,8 +6,7 @@ import {
   LINK_FIELDS,
 } from "./formFieldsConfig";
 
-// Configure the worker source for P        // Fields are permanently static now
-console.log("Form fields rendered as permanent static elements");
+// Configure the worker source for PDF.js
 GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
 
 export default function PDFFormViewer() {
@@ -65,7 +64,6 @@ export default function PDFFormViewer() {
 
       return fields;
     } catch (err) {
-      console.warn("Error extracting form fields:", err);
       return [];
     }
   }, []);
@@ -76,8 +74,6 @@ export default function PDFFormViewer() {
       if (!pdfDocument || !canvasRef.current) return;
 
       try {
-        console.log(`Rendering page ${pageNumber}...`);
-
         const canvas = canvasRef.current;
         const context = canvas.getContext("2d");
 
@@ -98,21 +94,9 @@ export default function PDFFormViewer() {
         });
 
         await renderTask.promise;
-        console.log(`Page ${pageNumber} rendered successfully!`);
 
         // Extract form fields for this page
         const pageFields = await extractFormFields(page, viewport);
-        console.log(
-          `Found ${pageFields.length} form fields on page ${pageNumber}:`
-        );
-        pageFields.forEach((field) => {
-          const fieldInfo = `  Field: ${field.name}, Type: ${field.type}${
-            field.isCheckbox ? " (CHECKBOX)" : ""
-          }, Position: (${Math.round(field.x)}, ${Math.round(
-            field.y
-          )}), Size: ${Math.round(field.width)}x${Math.round(field.height)}`;
-          console.log(fieldInfo);
-        });
 
         // Update form fields state
         setFormFields((prev) => ({
@@ -124,7 +108,6 @@ export default function PDFFormViewer() {
         context.lineWidth = 1;
         context.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
       } catch (err) {
-        console.error(`Error rendering page ${pageNumber}:`, err);
         setError(err.message);
       }
     },
@@ -135,41 +118,27 @@ export default function PDFFormViewer() {
   useEffect(() => {
     const loadPDF = async () => {
       try {
-        console.log("Starting PDF load process...");
-
-        console.log("Testing PDF file accessibility...");
         // Test if PDF is accessible via HTTP first
         try {
           const response = await fetch("/pdf/f1040.pdf");
-          console.log(
-            "PDF fetch response:",
-            response.status,
-            response.statusText
-          );
           if (!response.ok) {
             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
           }
         } catch (fetchErr) {
-          console.error("PDF file not accessible via HTTP:", fetchErr);
           throw new Error(`PDF file not accessible: ${fetchErr.message}`);
         }
-
-        console.log("Loading PDF from /pdf/f1040.pdf...");
         const loadingTask = getDocument({
           url: "/pdf/f1040.pdf",
           verbosity: 1,
         });
 
         const pdf = await loadingTask.promise;
-        console.log("PDF loaded successfully!");
-        console.log(`PDF has ${pdf.numPages} pages`);
 
         setPdfDocument(pdf);
         setTotalPages(pdf.numPages);
         setPdfLoaded(true);
         setIsLoading(false);
       } catch (err) {
-        console.error("PDF load failed:", err);
         setError(err.message);
         setIsLoading(false);
       }
@@ -254,27 +223,6 @@ export default function PDFFormViewer() {
             }
           });
         });
-
-        console.log("Form data initialized:", initialData);
-
-        // Log all detected fields for configuration file updates
-        console.log("\n=== ALL DETECTED FORM FIELDS ===");
-        Object.values(formFields).forEach((pageFields, pageIndex) => {
-          console.log(`\n--- Page ${pageIndex + 1} ---`);
-          pageFields.forEach((field) => {
-            const fieldType = field.isCheckbox ? "CHECKBOX" : field.type;
-            const defaultValue = field.isCheckbox ? "false" : '""';
-            console.log(
-              `"${field.name}": ${defaultValue}, // ${fieldType} - ${
-                field.isCheckbox ? "CHECKBOX" : "Field"
-              }`
-            );
-          });
-        });
-        console.log("================================\n");
-
-        // Fields are permanent from the start
-        console.log("Form fields rendered as permanent static elements");
 
         return initialData;
       });
@@ -474,10 +422,6 @@ export default function PDFFormViewer() {
                           e.preventDefault();
                           if (LINK_FIELDS[field.name].onClick) {
                             LINK_FIELDS[field.name].onClick(fieldValue);
-                          } else {
-                            console.log(
-                              `Link field clicked: ${field.name} = ${fieldValue}`
-                            );
                           }
                         }}
                         style={{
